@@ -31,3 +31,19 @@ export let createNoteController = async (req, res) => {
     });
   }
 };
+
+export let getAllNoteController = async (req, res) => {
+  try {
+    const allNotes = await NoteModel.find();
+
+    return res.status(200).json({
+      message: "Notes fetched successfully",
+      notes: allNotes,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
