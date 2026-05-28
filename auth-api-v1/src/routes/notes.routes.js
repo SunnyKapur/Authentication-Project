@@ -13,4 +13,6 @@ router.get("/", getAllNoteController);
 router.patch("/update/:id", updateNoteController);
 router.delete("/delete/:id", deleteNoteController);
 
+
+
 export default router;
