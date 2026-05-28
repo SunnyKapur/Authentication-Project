@@ -1,5 +1,5 @@
 import express from 'express'
-import noteRoutes from './routes/notes.routes'
+import noteRoutes from './routes/notes.routes.js'
 
 
 let app = express()
