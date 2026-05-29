@@ -10,12 +10,15 @@ let noteSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    user: {
+      type: String,
+    },
   },
   {
     timestamps: true,
   },
 );
 
-let NoteModel = mongoose.model("notes", noteSchema)
+let NoteModel = mongoose.model("notes", noteSchema);
 
-export default NoteModel
+export default NoteModel;

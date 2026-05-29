@@ -4,6 +4,11 @@ export let createNoteController = async (req, res) => {
   try {
     let { title, description } = req.body;
 
+    const token = req.cookies.token;
+    const user = JSON.parse(token);
+
+    req.user = user; // {id: "user_id", email: "user_email"}
+
     if (!title || !description)
       return res.status(400).json({
         message: "Title and Description are required",
@@ -18,7 +23,11 @@ export let createNoteController = async (req, res) => {
       });
     }
 
-    const newNote = await NoteModel.create({ title, description });
+    const newNote = await NoteModel.create({
+      title,
+      description,
+      user: req.user.email,
+    });
 
     return res.status(201).json({
       message: "new note created successfully",
@@ -34,6 +43,12 @@ export let createNoteController = async (req, res) => {
 
 export let getAllNoteController = async (req, res) => {
   try {
+
+    const token = req.cookies.token
+    const user = JSON.parse(token)
+
+    req.user = user
+
     const allNotes = await NoteModel.find();
 
     return res.status(200).json({
@@ -95,19 +110,18 @@ export let updateNoteController = async (req, res) => {
 
 export let deleteNoteController = async (req, res) => {
   try {
-    
-    let {id} = req.params
+    let { id } = req.params;
 
-    if(!id) return res.status(404).json({
-        message: "Id note found"
-    })
+    if (!id)
+      return res.status(404).json({
+        message: "Id note found",
+      });
 
-    await NoteModel.findByIdAndDelete(id)
+    await NoteModel.findByIdAndDelete(id);
 
     return res.status(200).json({
-        message: "note deleted successfully"
-    })
-
+      message: "note deleted successfully",
+    });
   } catch (error) {
     return res.status(500).json({
       message: "Internal server error",
