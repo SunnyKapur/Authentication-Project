@@ -1,5 +1,6 @@
 import UserModel from "../models/users.model.js";
 import cookie from "cookie-parser";
+import jwt from "jsonwebtoken"
 
 export let registerController = async (req, res) => {
   try {
@@ -27,7 +28,9 @@ export let registerController = async (req, res) => {
 
     const newUser = await UserModel.create({ name, email });
 
-    const token = JSON.stringify({ id: newUser._id, email: newUser.email });
+    const token = jwt.sign({ id: newUser._id, email: newUser.email }, process.env.JWT_SECRET, {
+      expiresIn: "7d"
+    });
 
     res.cookie("token", token);
 

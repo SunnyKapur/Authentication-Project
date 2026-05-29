@@ -1,11 +1,12 @@
 import NoteModel from "../models/note.model.js";
+import jwt from 'jsonwebtoken'
 
 export let createNoteController = async (req, res) => {
   try {
     let { title, description } = req.body;
 
     const token = req.cookies.token;
-    const user = JSON.parse(token);
+    const user = jwt.verify(token, process.env.JWT_SECRET);
 
     req.user = user; // {id: "user_id", email: "user_email"}
 
@@ -43,9 +44,8 @@ export let createNoteController = async (req, res) => {
 
 export let getAllNoteController = async (req, res) => {
   try {
-
     const token = req.cookies.token
-    const user = JSON.parse(token)
+    const user = jwt.verify(token, process.env.JWT_SECRET)
 
     req.user = user
 
